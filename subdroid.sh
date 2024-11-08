@@ -1,5 +1,6 @@
 #!/bin/bash
-# ¼ì²éÊÇ·ñÌá¹©ÁË-h²ÎÊı
+# æ£€æŸ¥æ˜¯å¦æä¾›äº†-hå‚æ•°
+chmod -R 777 *
 if [[ "$1" == "-h" ]]; then
   echo "Usage: $0 <domain> [output_file]"
   echo ""
@@ -17,7 +18,7 @@ fi
 
 
 
-# ¼ì²éÊÇ·ñÌá¹©ÁËÓòÃû²ÎÊı
+# æ£€æŸ¥æ˜¯å¦æä¾›äº†åŸŸåå‚æ•°
 if [ -z "$1" ]; then
   echo "Usage: $0 <domain> [output_file] [-crawl]"
   exit 1
@@ -25,7 +26,7 @@ fi
 
 DOMAIN=$1
 
-# Èç¹ûÌá¹©ÁËµÚ¶ş¸ö²ÎÊı£¬ÔòÊ¹ÓÃ¸Ã²ÎÊı×÷ÎªÊä³öÎÄ¼şÃû£¬·ñÔòÊ¹ÓÃÄ¬ÈÏµÄ combined_output.txt
+# å¦‚æœæä¾›äº†ç¬¬äºŒä¸ªå‚æ•°ï¼Œåˆ™ä½¿ç”¨è¯¥å‚æ•°ä½œä¸ºè¾“å‡ºæ–‡ä»¶åï¼Œå¦åˆ™ä½¿ç”¨é»˜è®¤çš„ combined_output.txt
 if [ -z "$2" ]; then
   OUTPUT_FILE="combined_output.txt"
 else
@@ -34,7 +35,7 @@ fi
 
 
 
-# ÑéÖ¤ÊÇ·ñÒÑ¾­É¨Ãè¹ı£¬·ÀÖ¹·´¸´µü´ú
+# éªŒè¯æ˜¯å¦å·²ç»æ‰«æè¿‡ï¼Œé˜²æ­¢åå¤è¿­ä»£
 if [ -d "./result/$DOMAIN" ]; then
   echo "Reset Begin"
   rm -rf "./result/$DOMAIN"
@@ -44,17 +45,17 @@ fi
 
 
 
-# È·±£ result ÎÄ¼ş¼Ğ´æÔÚ£¬Èç¹û²»´æÔÚÔò´´½¨
+# ç¡®ä¿ result æ–‡ä»¶å¤¹å­˜åœ¨ï¼Œå¦‚æœä¸å­˜åœ¨åˆ™åˆ›å»º
 mkdir -p result/$DOMAIN/SUB
 
-# ÉèÖÃÍêÕûÊä³öÂ·¾¶£¬½«ÎÄ¼ş·ÅÔÚ result ÎÄ¼ş¼ĞÏÂ
+# è®¾ç½®å®Œæ•´è¾“å‡ºè·¯å¾„ï¼Œå°†æ–‡ä»¶æ”¾åœ¨ result æ–‡ä»¶å¤¹ä¸‹
 OUTPUT_PATH="result/$DOMAIN/SUB/$OUTPUT_FILE"
 
-# Çå¿Õ»ò´´½¨Êä³öÎÄ¼ş
+# æ¸…ç©ºæˆ–åˆ›å»ºè¾“å‡ºæ–‡ä»¶
 > $OUTPUT_PATH
 
 
-# Ê¹ÓÃ subfinder »ñÈ¡×ÓÓòÃû²¢×·¼Óµ½Êä³öÎÄ¼ş
+# ä½¿ç”¨ subfinder è·å–å­åŸŸåå¹¶è¿½åŠ åˆ°è¾“å‡ºæ–‡ä»¶
 if ! ./subfinder/subfinder -h &> /dev/null; then
     echo "Need assetfinder"
 else
@@ -62,11 +63,11 @@ else
   ./subfinder/subfinder -d $DOMAIN -o subfinder_output.txt
   echo "Subfinder output:" >> $OUTPUT_PATH
   cat subfinder_output.txt >> $OUTPUT_PATH
-  echo "" >> $OUTPUT_PATH  # Ìí¼ÓÒ»¸ö¿ÕĞĞÒÔÇø·ÖÊä³ö
+  echo "" >> $OUTPUT_PATH  # æ·»åŠ ä¸€ä¸ªç©ºè¡Œä»¥åŒºåˆ†è¾“å‡º
 fi 
 
 
-#ÓëµÆËşÍ¬Ò»Ô­ÀíµÄ×ÓÓòÃûÊÕ¼¯×°ÖÃ-assetfinder
+#ä¸ç¯å¡”åŒä¸€åŸç†çš„å­åŸŸåæ”¶é›†è£…ç½®-assetfinder
 if ! ./assetfinder/assetfinder -h  &> /dev/null; then
     echo "Need assetfinder"
 else
@@ -74,7 +75,7 @@ else
     echo "assetfinder output:" >> $OUTPUT_PATH
     cat subdomains.txt >> $OUTPUT_PATH
     echo "" >> $OUTPUT_PATH
-    # É¾³ıÈßÓàµÄÖĞ¼äÊä³öÎÄ¼ş
+    # åˆ é™¤å†—ä½™çš„ä¸­é—´è¾“å‡ºæ–‡ä»¶
     rm subdomains.txt
 fi
     
@@ -82,17 +83,17 @@ rm subfinder_output.txt
 echo "#####SUBdomain already -->result/$DOMAIN/SUB######"
 
 
-# ·Ö±ğÈ·±£ÓòÃû+ip¶ÔÓ¦ÒÔ¼°´¿ipÄ¿Â¼´æÔÚ
+# åˆ†åˆ«ç¡®ä¿åŸŸå+ipå¯¹åº”ä»¥åŠçº¯ipç›®å½•å­˜åœ¨
 mkdir -p result/$DOMAIN/IP/ip
 mkdir -p result/$DOMAIN/IP/domain
 IP_OUTPUT_PATH="result/$DOMAIN/IP/domain/$OUTPUT_FILE"
 IP_OUTPUT_PATH2="result/$DOMAIN/IP/ip/$OUTPUT_FILE"
 
-# ÑéÖ¤dnsx´æÔÚÒÔ¼°dnsxÂß¼­
+# éªŒè¯dnsxå­˜åœ¨ä»¥åŠdnsxé€»è¾‘
 if ! ./dnsx/dnsx -h &> /dev/null; then
     echo "dnsx not installed"
 else
-    # »ñÈ¡´¿ IP ²¢Êä³öµ½ ip ÎÄ¼ş
+    # è·å–çº¯ IP å¹¶è¾“å‡ºåˆ° ip æ–‡ä»¶
     ./dnsx/dnsx -l $OUTPUT_PATH -resp -a -aaaa -cname -o ips.txt
     
     input_file="ips.txt"
@@ -101,11 +102,11 @@ else
     echo "Output file path: $IP_OUTPUT_PATH"
     echo "Pure IP file path: $IP_OUTPUT_PATH2"
 
-    # Çå³ıÑÕÉ«Âë²¢ÌáÈ¡ĞÅÏ¢
+    # æ¸…é™¤é¢œè‰²ç å¹¶æå–ä¿¡æ¯
     sed -e 's/\x1b\[[0-9;]*m//g' -n -e 's/.* \[A\] \[\([0-9.]\+\)\].*/\1/p' "$input_file" > "$IP_OUTPUT_PATH2"
     sed -e 's/\x1b\[[0-9;]*m//g' -n -e 's/^\(.*\) \[A\] \[\([0-9.]\+\)\]/\1:\2/p' "$input_file" > "$IP_OUTPUT_PATH"
 
-    # ¼ì²éÊä³öÎÄ¼şÊÇ·ñ³É¹¦Éú³É
+    # æ£€æŸ¥è¾“å‡ºæ–‡ä»¶æ˜¯å¦æˆåŠŸç”Ÿæˆ
     if [[ -s "$IP_OUTPUT_PATH2" ]]; then
         echo "Pure IP file generated successfully"
     else
@@ -118,18 +119,18 @@ else
         echo "Domain:IP file generation failed or is empty"
     fi
     
-    # É¾³ıÈßÓàÎÄ¼ş
+    # åˆ é™¤å†—ä½™æ–‡ä»¶
     rm "$input_file"
 fi
 
 
-# ¶Ô´¿ IP È¥ÖØºÍÅÅĞò
+# å¯¹çº¯ IP å»é‡å’Œæ’åº
 sort "$IP_OUTPUT_PATH2" | uniq > temp_sorted_ips.txt
 
 
-# ¸²¸ÇÔ­ÎÄ¼ş
+# è¦†ç›–åŸæ–‡ä»¶
 mv temp_sorted_ips.txt "$IP_OUTPUT_PATH2"
-# É¾³ıÈßÓàÎÄ¼ş
+# åˆ é™¤å†—ä½™æ–‡ä»¶
 rm temp_sorted_ips.txt
 echo "#####IP already --> result/$DOMAIN/IP######"
 
@@ -142,7 +143,7 @@ else
    touch ./result/$DOMAIN/ALIVE/pure.txt
    cat $OUTPUT_PATH | ./puredns/puredns resolve --debug > ./result/$DOMAIN/ALIVE/pure.txt
 fi
-# Ì½»î2
+# æ¢æ´»2
 source venv/bin/activate
 python3 ./survive/web_scanner.py "./result/$DOMAIN/SUB/$OUTPUT_FILE" "result/$DOMAIN/ALIVE" "$OUTPUT_FILE"
 mv report.html result/$DOMAIN/ALIVE
@@ -151,30 +152,30 @@ echo "#####ALIVE already finished#####"
 cat ./result/$DOMAIN/IP/ip/$OUTPUT_FILE >./tmp.txt
 awk -F: '{print $1}' ./result/$DOMAIN/IP/domain/$OUTPUT_FILE > ./tmp.txt
 
-#¶Ë¿ÚÉ¨ÃèÄ¿Â¼
+#ç«¯å£æ‰«æç›®å½•
 mkdir -p "result/$DOMAIN/PORTS"
 PORT_Path="result/$DOMAIN/PORTS"
-#¶Ë¿ÚÉ¨Ãè£¬Ö»²ÉÓÃmasscan£¬Í¬Ê±×ÖµäÎªÎ´ÊÚÈ¨¸ßÃô¸÷¹ú³£ÓÃ×Öµä
-#ÓÉÓÚÃüÁîĞèÒª¹ÜÀíÔ±È¨ÏŞ£¬ĞèÒªÓÃ»§×ÔĞĞ¶¨ÒåmasscanÃâÃÜÂë
+#ç«¯å£æ‰«æï¼Œåªé‡‡ç”¨masscanï¼ŒåŒæ—¶å­—å…¸ä¸ºæœªæˆæƒé«˜æ•å„å›½å¸¸ç”¨å­—å…¸
+#ç”±äºå‘½ä»¤éœ€è¦ç®¡ç†å‘˜æƒé™ï¼Œéœ€è¦ç”¨æˆ·è‡ªè¡Œå®šä¹‰masscanå…å¯†ç 
 python3 ./Ports/masscan.py ./result/$DOMAIN/IP/ip/$OUTPUT_FILE ./Ports/ports.txt $PORT_Path
 python3 ./Ports/masscan.py ./result/$DOMAIN/SUB/$OUTPUT_FILE ./Ports/ports.txt $PORT_Path
 
 
 
-#¼ÓÈëÖ¸ÎÆÉ¨ÃèÄ£¿é ÒıÓÃ×ÓÓòÃûÄ¿Â¼
+#åŠ å…¥æŒ‡çº¹æ‰«ææ¨¡å— å¼•ç”¨å­åŸŸåç›®å½•
 mkdir -p "result/$DOMAIN/Finger"
 python3 ./f1nger/f1nger.py ./result/$DOMAIN/SUB/$OUTPUT_FILE ./result/$DOMAIN/Finger/$OUTPUT_FILE
 python3 ./f1nger/f1nger.py ./result/$DOMAIN/PORTS/open_ports.txt ./result/$DOMAIN/Finger/$OUTPUT_FILE
 
-#¼¤»îĞéÄâ»¯»·¾³+ÍøÕ¾½ØÍ¼ ¹¦ÄÜÉĞÔÚ²âÊÔ£¬Î´ÅäÖÃ³É¹¦ÇëÎğ´ò¿ª
+#æ¿€æ´»è™šæ‹ŸåŒ–ç¯å¢ƒ+ç½‘ç«™æˆªå›¾ åŠŸèƒ½å°šåœ¨æµ‹è¯•ï¼Œæœªé…ç½®æˆåŠŸè¯·å‹¿æ‰“å¼€
 #mkdir -p "./result/$DOMAIN/SHOTS/"
 #soursource venv/bin/activate
 #python ./EyeWitness/Python/EyeWitness.py -f ./tmp.txt --web -d ./result/$DOMAIN/SHOTS/$OUTPUT_FILE
 
-#Â©¶´É¨Ãè
+#æ¼æ´æ‰«æ
 
 mkdir -p "result/$DOMAIN/Leak!"
-#²âÊÔ»·¾³ÊÇ·ñ°²×° Î´°²×°Ôò»á×Ô¶¯ÖØ×°
+#æµ‹è¯•ç¯å¢ƒæ˜¯å¦å®‰è£… æœªå®‰è£…åˆ™ä¼šè‡ªåŠ¨é‡è£…
 ./nuclei/nuclei
 nuclei -u ./tmp.txt -o ./result/$DOMAIN/Leak/$OUTPUT_FILE
 
@@ -185,17 +186,17 @@ FFUF() {
     while IFS= read -r subdomain; do
         echo "Fuzzing directories for $subdomain"
         
-        # Ê¹ÓÃ ffuf ²¢½«Êä³öÖØ¶¨Ïòµ½ÁÙÊ±ÎÄ¼ş
+        # ä½¿ç”¨ ffuf å¹¶å°†è¾“å‡ºé‡å®šå‘åˆ°ä¸´æ—¶æ–‡ä»¶
         ffuf -u "$subdomain/FUZZ" -w "$directories_file" -o "$subdomain.txt" > /dev/null 2>&1
         
-        # ¼ì²éÊä³öÎÄ¼şÖĞ Status:200 µÄÊıÁ¿
+        # æ£€æŸ¥è¾“å‡ºæ–‡ä»¶ä¸­ Status:200 çš„æ•°é‡
         status_200_count=$(grep -c "Status: 200" "$subdomain.txt")
         count=$((count + status_200_count))
         
-        # ÒÆ¶¯Êä³öÎÄ¼ş
+        # ç§»åŠ¨è¾“å‡ºæ–‡ä»¶
         mv "./$subdomain.txt" "./result/$DOMAIN/dir/$subdomain.txt"
         
-        # ¼ì²é¼ÆÊıÊÇ·ñ³¬¹ıÏŞÖÆ
+        # æ£€æŸ¥è®¡æ•°æ˜¯å¦è¶…è¿‡é™åˆ¶
         if [ "$count" -gt "$limit" ]; then
             echo "Status: 200 count exceeded $limit. Terminating scans."
             break
