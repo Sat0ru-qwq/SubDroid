@@ -1,7 +1,7 @@
 #!/bin/bash
 # 检查是否提供了-h参数
-chmod -R 777 *
 if [[ "$1" == "-h" ]]; then
+  echo "Please make Sure the SubDroid's every  tool have the priveledge"
   echo "Usage: $0 <domain> [output_file]"
   echo ""
   echo "Parameter Description:"
@@ -144,7 +144,7 @@ else
    cat $OUTPUT_PATH | ./puredns/puredns resolve --debug > ./result/$DOMAIN/ALIVE/pure.txt
 fi
 # 探活2
-source venv/bin/activate
+source ./survive/venv/bin/activate
 python3 ./survive/web_scanner.py "./result/$DOMAIN/SUB/$OUTPUT_FILE" "result/$DOMAIN/ALIVE" "$OUTPUT_FILE"
 mv report.html result/$DOMAIN/ALIVE
 echo "#####ALIVE already finished#####"
